@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Report Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="text"],
+        input[type="file"],
+        button {
+            font-size: 16px;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box; /* Adds padding without increasing width */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <h1>Submit Incident Reports</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="url">Enter URLs (separated by spaces):</label>
+        <input type="text" name="url" id="url">
+        <label for="file">Or upload a PDF file:</label>
+        <input type="file" name="file" id="file">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
