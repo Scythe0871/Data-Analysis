@@ -100,27 +100,44 @@ def generate_bar_graph(data):
 def cluster_incidents(data, k=5):
     if not data:
         return
+    
     categories = [item[0] for item in data]
-    counts = np.array([item[1] for item in data]).reshape(-1, 1)
-    kmeans = KMeans(n_clusters=k, random_state=0)
-    kmeans.fit(counts)
-    labels = kmeans.labels_
+    counts = np.array([item[1] for item in data])
+    
+    X = np.column_stack((
+        counts,  
+        np.arange(len(counts))  
+    ))
+    
+    X_normalized = (X - X.mean(axis=0)) / X.std(axis=0)
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    labels = kmeans.fit_predict(X_normalized)
+    
+    plt.figure(figsize=(10, 8))
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD']
+    for i in range(k):
+        mask = labels == i
+        plt.scatter(X_normalized[mask, 0], 
+                   X_normalized[mask, 1],
+                   c=colors[i],
+                   label=f'Cluster {i}',
+                   alpha=0.6,
+                   s=100)
+    
+    # Customize plot
+    plt.title('Incident Clusters')
+    plt.xlabel('Normalized Incident Count')
+    plt.ylabel('Normalized Position')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.margins(0.1)
     static_folder = os.path.join(app.root_path, 'static')
     os.makedirs(static_folder, exist_ok=True)
-    plt.figure(figsize=(14, 7))
-    colors = plt.cm.viridis(np.linspace(0, 1, k))
-    for label in set(labels):
-        cluster_data = [categories[i] for i in range(len(labels)) if labels[i] == label]
-        cluster_counts = [counts[i][0] for i in range(len(labels)) if labels[i] == label]
-        plt.scatter(cluster_data, cluster_counts, color=colors[label], label=f'Cluster {label}', s=100)
-    plt.xticks(rotation=90)
-    plt.ylabel('Counts')
-    plt.title('Incident Clusters')
-    plt.legend()
-    file_path = os.path.join(static_folder, 'clusters.png')
-    plt.tight_layout()
-    plt.savefig(file_path)
+    plt.savefig(os.path.join(static_folder, 'clusters.png'), 
+                bbox_inches='tight', 
+                dpi=300)
     plt.close()
+
 
 def generate_pie_chart(data, top_n=5):
     if not data:
@@ -136,11 +153,11 @@ def generate_pie_chart(data, top_n=5):
         labels.append('Other')
         sizes.append(other_size)
     
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(12, 12))
     plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
     plt.title('Pie Chart Visualization [Top Incident Types]')
-    
+    plt.tight_layout()
     static_folder = os.path.join(app.root_path, 'static')
     os.makedirs(static_folder, exist_ok=True)
     file_path = os.path.join(static_folder, 'piechart.png')
