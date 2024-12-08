@@ -68,27 +68,21 @@ Ensure you have the following installed:
 ### Installation Steps
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
-    cd <repository-folder>
+    git clone https://github.com/Scythe0871/cis6930fa24-project3
     ```
 
-2. Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3. Set up the project structure:
+2. Set up the project structure:
     ```bash
     mkdir static
     mkdir resources
     ```
 
-4. Run the application:
+3. Run the application:
     ```bash
-    python app.py
+    pipenv run python app.py
     ```
 
-5. Access the application at `http://127.0.0.1:5000` in your web browser.
+4. Access the application at `http://127.0.0.1:5000` in your web browser.
 
 ---
 
